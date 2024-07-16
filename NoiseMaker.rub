@@ -1,0 +1,24 @@
+aminoAcids = {1 => "A",  2 => "R",  3 => "N",  4 => "D",  5 => "C",  6 => "Q",  7 => "E",  8 => "G",  9 => "H", 10 => "I",  11 => "L",  12 => "K",  13 => "M",  14 => "F",  15 => "P",  16 => "S",  17 => "T",  18 => "W",  19 => "Y",  20 => "V"}
+inputNumber = ARGV[0]
+inputLength = ARGV[1]
+
+seqNumber = inputNumber.to_i
+seqLength = inputLength.to_i
+sims = 100
+
+
+sims.times do |simNumber|
+	fileNumber = simNumber.to_s
+	fName = fileNumber + ".Noise.phy"
+	File.write(fName, inputNumber + " " + inputLength + "\n", mode: 'a+')
+	print inputNumber + " " + inputLength + "\n"
+	seqNumber.times do |i|
+		seq = Array.new()
+		seqLength.times do
+			rando=rand(1..20)
+			seq.push(aminoAcids[rando])
+		end
+		File.write(fName, "t#{i+1}\t" + seq.join() + "\n", mode: 'a+')
+		print "t#{i+1}\t" + seq.join() + "\n"
+	end
+end
