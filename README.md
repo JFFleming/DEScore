@@ -40,5 +40,16 @@ perl DEScoreCalculator.pl Input.fas Results
 
 This command takes the fasta file "Input.fas" as input, and produces two output files: "Results.SiteSaturation.TotalFrequencies.txt" and "Results.SiteSaturation.TaxaFrequencies.txt". 
 
+
 Inside Results.SiteSaturation.TotalFrequencies.txt you will find a table showing the Dayhoff Exchange Frequency, Dayhoff Exchange Frequency Standard Deviation and the DE-Score of the entire dataset.
 Inside Results.SiteSaturation.TaxaFrequencies.txt you will find the same, but for each taxa in your dataset instead.
+
+
+#NoiseMaker
+Also provided in this package is Noisemaker, a ruby script. It is a pure noise generator for amino acid datasets, used in the initial manuscript to test the effect of noise on the DE-Score. Noisemaker is a very simple program - you provide Noisemaker with a number of sequences and a length of an amino acid alignment and it produces a phylip alignment of pure noise by randomly generating a number from 1-20 X number of times.
+
+Format a command for Noisemaker as follows
+``
+ruby NoiseMaker.rub 10 100
+``
+This produces an alignment of ten taxa that is 100 amino acids in length.
