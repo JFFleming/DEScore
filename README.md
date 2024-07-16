@@ -13,4 +13,32 @@ The DE-Score is a rapid, easily calculated site saturation metric, implemented i
 # How does it work?
 The DE-Score is very simple! It measures the frequency of pairwise between Dayhoff Category and within Dayhoff Category Exchanges across an amino acid dataset using the following equation:
 
-DEScore=(1/n ∑_(t=1)^n▒∑_(i=1)^(n-1)▒〖Cw〗_it/(〖Cb〗_it+〖Cw〗_it ))/n^(-0.08) ![image](https://github.com/user-attachments/assets/e518ece2-7b29-49c3-bb77-08b1e934f66e)
+![image](https://github.com/user-attachments/assets/e518ece2-7b29-49c3-bb77-08b1e934f66e)
+
+# Installing the DE-Score Calculator
+The DE-Score Calculator provided in this Github is easy to install. It is a Perl script that requires the installation of one additional Perl module - FAST::Bio::SeqIO (this is a Bioperl module that makes it easier to read Fasta Files).
+This can be installed with the following command:
+
+``
+cpan FAST::Bio::SeqIO
+``
+
+And then you're ready to go!
+
+# Using DE-Score Calculator
+The DE-Score Calculator takes two arguments as input, an aligned fasta file and an output prefix, as follows:
+
+``
+perl DEScoreCalculator.pl <InputFileName> <OutputFilePrefix>
+``
+
+That can be formatted like so:
+
+``
+perl DEScoreCalculator.pl Input.fas Results
+``
+
+This command takes the fasta file "Input.fas" as input, and produces two output files: "Results.SiteSaturation.TotalFrequencies.txt" and "Results.SiteSaturation.TaxaFrequencies.txt". 
+
+Inside Results.SiteSaturation.TotalFrequencies.txt you will find a table showing the Dayhoff Exchange Frequency, Dayhoff Exchange Frequency Standard Deviation and the DE-Score of the entire dataset.
+Inside Results.SiteSaturation.TaxaFrequencies.txt you will find the same, but for each taxa in your dataset instead.
