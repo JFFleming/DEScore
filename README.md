@@ -11,9 +11,15 @@ However, amino acid datasets are not immune to site saturation, particularly con
 The DE-Score is a rapid, easily calculated site saturation metric, implemented in Perl, that provides users with the ability to easily survey and explore the presence of site saturation in their dataset. It also contains a taxon-specific metric, the tDE-Score, which for the first time allows researchers to assess the effect of a single taxa on the overall saturation in a dataset.
 
 # How does it work?
-The DE-Score is very simple! It measures the frequency of pairwise between Dayhoff Category and within Dayhoff Category Exchanges across an amino acid dataset using the following equation:
+The DE-Score is very simple! It measures the frequency of pairwise between Dayhoff Category and within Dayhoff Category Exchanges across an amino acid dataset, and then works out the distance of these changes from the uninformative Dayhoff Category Exchange Ratio, normalised for the size of the dataset. It uses the following equation:
 
-![image](https://github.com/user-attachments/assets/e518ece2-7b29-49c3-bb77-08b1e934f66e)
+<img width="432" alt="Screen Shot 2025-01-20 at 10 48 03 AM" src="https://github.com/user-attachments/assets/a37ae2bf-7a9a-46ee-882b-ff268c351660" />
+
+It also comes in a taxa-specific variant, calculated as follows:
+
+<img width="373" alt="Screen Shot 2025-01-20 at 10 49 13 AM" src="https://github.com/user-attachments/assets/38f9ec48-2c24-4837-8efc-ffe6518cb547" />
+
+
 
 # Installing the DE-Score Calculator
 The DE-Score Calculator provided in this Github is easy to install. It is a Perl script that requires the installation of one additional Perl module - FAST::Bio::SeqIO (this is a Bioperl module that makes it easier to read Fasta Files).
