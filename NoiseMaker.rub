@@ -1,3 +1,6 @@
+####NOISEMAKER is very simple. It takes two inputs. Number, and Length. It produces 100 random "amino acid alignments" with a number of taxa equal to Number, and a length equal to Length.###
+
+
 aminoAcids = {1 => "A",  2 => "R",  3 => "N",  4 => "D",  5 => "C",  6 => "Q",  7 => "E",  8 => "G",  9 => "H", 10 => "I",  11 => "L",  12 => "K",  13 => "M",  14 => "F",  15 => "P",  16 => "S",  17 => "T",  18 => "W",  19 => "Y",  20 => "V"}
 inputNumber = ARGV[0]
 inputLength = ARGV[1]
