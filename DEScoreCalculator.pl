@@ -127,6 +127,7 @@ foreach my $k (keys %PhySeqs){
 	print "\n Finished assessing $k. Taxon $a of $size";
 	print TAXA "$k\t$TaxAverageTiFreq\t$TaxStdTiFreq\t$TaxDE\n";
 }
+print "\n";
 ### Here we do the whole dataset DE-Score calculation ###
 my $AverageTransI = avg(\@AllTis);
 my $AverageTransV = avg(\@AllTvs);
