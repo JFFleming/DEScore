@@ -124,7 +124,7 @@ foreach my $k (keys %PhySeqs){
 	my $TaxStdTiFreq =  get_stddev(\@TaxTiFreqs);
 	my $TaxDist = $TaxAverageTiFreq - 0.177;
 	my $TaxDE = $TaxDist/(0.255*$size**-0.15);
-	print "\n Finished assessing $k. Taxon $a of $size \n";
+	print "\n Finished assessing $k. Taxon $a of $size";
 	print TAXA "$k\t$TaxAverageTiFreq\t$TaxStdTiFreq\t$TaxDE\n";
 }
 ### Here we do the whole dataset DE-Score calculation ###
