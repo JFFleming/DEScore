@@ -17,6 +17,15 @@ my @Basic= ("H","K","R");
 my @Hydrophobic= ("I","L","V","M");
 my @Aromatic= ("F","W","Y");
 my @Sulfur= ("C");
+
+# Create hashes for fast lookup of each category
+my %Small = map { $_ => 1 } @Small;
+my %AcidAmide = map { $_ => 1 } @AcidAmide;
+my %Basic = map { $_ => 1 } @Basic;
+my %Hydrophobic = map { $_ => 1 } @Hydrophobic;
+my %Aromatic = map { $_ => 1 } @Aromatic;
+my %Sulfur = map { $_ => 1 } @Sulfur;
+
 my %PhySeqs;
 
 print "
@@ -33,15 +42,15 @@ If you have any questions, queries or comments, please don't hesitate to get in 
 jfleming\@jamstec.go.jp
 ";
 if($ARGV[0]=""||$ARGV[1]=""){
-print "Are you sure you formatted your input correctly? Check the description above to be sure.";
+    print "Are you sure you formatted your input correctly? Check the description above to be sure.";
 }
 
-###This reads the Fasta file in ###
+### This reads the Fasta file in ###
 while ( my $seq = $alignFile->next_seq() ) {
-	my $ID = $seq->display_id;
-	my $subseq = $seq->subseq(1, $seq->length());
-	my @sequence = split(//,$subseq);
-	$PhySeqs{$ID}=[@sequence];
+    my $ID = $seq->display_id;
+    my $subseq = $seq->subseq(1, $seq->length());
+    my @sequence = split(//,$subseq);
+    $PhySeqs{$ID}=[@sequence];
 }
 
 my $size = keys %PhySeqs;
@@ -53,79 +62,83 @@ my @AllTiFreqs;
 
 ### This loop counts pairwise Dayhoff Exchanges ###
 foreach my $k (keys %PhySeqs){
-	my @vals = @{ $PhySeqs{$k}};
-	my $b = 0;
-	my @TaxTvs;
-	my @TaxTis;
-	my @TaxTiFreqs;
-	foreach my $compk (keys %PhySeqs){
-		next if ($k eq $compk);
-		my @compvals = @{ $PhySeqs{$compk}};
-		my $i = 0;
-		my $pairwiseTI = 0;
-		my $pairwiseTV = 0;
-		my $SameCounter = 0;
-		my $SmallCounter = 0;
-		my $GapCounter = 0;
-		foreach (@vals){
-			my $query = $_;
-			my $compquery = $compvals[$i];
-			if ($query eq "-" || $compvals[$i] eq "-"){
-				$GapCounter++;
-			}
-			elsif ($compquery eq $query){
-				$SameCounter++;
-			}
-			elsif ($compquery ~~ @Small && $query ~~ @Small){
-				$pairwiseTI++;
-			}
-			elsif ($query ~~ @AcidAmide && $compquery ~~ @AcidAmide){
-                                $pairwiseTI++;
-                        }
-                        elsif ($query ~~ @Basic && $compquery ~~ @Basic){
-                                $pairwiseTI++;
-                        }
-                        elsif ($query ~~ @Hydrophobic && $compquery ~~ @Hydrophobic){
-                                $pairwiseTI++;
-                        }
-                        elsif ($query ~~  @Aromatic && $compquery ~~ @Aromatic){
-                                $pairwiseTI++;
-                        }
-                        elsif ($query ~~  @Sulfur && $compquery ~~ @Sulfur){
-                                $pairwiseTI++;
-                        }
-                        else{
-                                $pairwiseTV++;
-                        }
-			$i++;
-		}
-		$b++;
-		if ($pairwiseTI == 0 && $pairwiseTV == 0) {
-			$GapCounter++;
-		}
+    my @vals = @{ $PhySeqs{$k}};
+    my $b = 0;
+    my @TaxTvs;
+    my @TaxTis;
+    my @TaxTiFreqs;
+    
+    foreach my $compk (keys %PhySeqs){
+        next if ($k eq $compk);
+        my @compvals = @{ $PhySeqs{$compk}};
+        my $i = 0;
+        my $pairwiseTI = 0;
+        my $pairwiseTV = 0;
+        my $SameCounter = 0;
+        my $SmallCounter = 0;
+        my $GapCounter = 0;
+        
+        foreach (@vals){
+            my $query = $_;
+            my $compquery = $compvals[$i];
+            
+            if ($query eq "-" || $compquery eq "-"){
+                $GapCounter++;
+            }
+            elsif ($compquery eq $query){
+                $SameCounter++;
+            }
+            # Check for amino acids in the same category
+            elsif ($Small{$query} && $Small{$compquery}) {
+                $pairwiseTI++;
+            }
+            elsif ($AcidAmide{$query} && $AcidAmide{$compquery}) {
+                $pairwiseTI++;
+            }
+            elsif ($Basic{$query} && $Basic{$compquery}) {
+                $pairwiseTI++;
+            }
+            elsif ($Hydrophobic{$query} && $Hydrophobic{$compquery}) {
+                $pairwiseTI++;
+            }
+            elsif ($Aromatic{$query} && $Aromatic{$compquery}) {
+                $pairwiseTI++;
+            }
+            elsif ($Sulfur{$query} && $Sulfur{$compquery}) {
+                $pairwiseTI++;
+            }
+            else{
+                $pairwiseTV++;
+            }
+            $i++;
+        }
+        $b++;
+        if ($pairwiseTI == 0 && $pairwiseTV == 0) {
+            $GapCounter++;
+        }
 ### This part pushes each pairwise TI/TV to the taxon specific and whole dataset arrays. ###
-		else{
-		my $TiFreq = $pairwiseTI/($pairwiseTI+$pairwiseTV);
-		push (@AllTis, $pairwiseTI);
-		push (@AllTvs, $pairwiseTV);
-		push (@AllTiFreqs, $TiFreq);
-		push (@TaxTis, $pairwiseTI);
-		push (@TaxTvs, $pairwiseTV);
-		push (@TaxTiFreqs, $TiFreq);
-		}
-	}
+        else{
+            my $TiFreq = $pairwiseTI/($pairwiseTI+$pairwiseTV);
+            push (@AllTis, $pairwiseTI);
+            push (@AllTvs, $pairwiseTV);
+            push (@AllTiFreqs, $TiFreq);
+            push (@TaxTis, $pairwiseTI);
+            push (@TaxTvs, $pairwiseTV);
+            push (@TaxTiFreqs, $TiFreq);
+        }
+    }
 ### Here we do the taxon DE-Score calculation ###
-	$a++;
-	my $TaxAverageTransI = avg(\@TaxTis);
-	my $TaxAverageTransV = avg(\@TaxTvs);
-	my $TaxAverageTiFreq = avg(\@TaxTiFreqs);
-	my $TaxStdTransI = get_stddev(\@TaxTis);
-	my $TaxStdTransV = get_stddev(\@TaxTvs);
-	my $TaxStdTiFreq =  get_stddev(\@TaxTiFreqs);
-	my $TaxDist = $TaxAverageTiFreq - 0.177;
-	my $TaxDE = $TaxDist/(0.255*$size**-0.15);
-	print "\n Finished assessing $k. Taxon $a of $size";
-	print TAXA "$k\t$TaxAverageTiFreq\t$TaxStdTiFreq\t$TaxDE\n";
+    $a++;
+    my $TaxAverageTransI = avg(\@TaxTis);
+    my $TaxAverageTransV = avg(\@TaxTvs);
+    my $TaxAverageTiFreq = avg(\@TaxTiFreqs);
+    my $TaxStdTransI = get_stddev(\@TaxTis);
+    my $TaxStdTransV = get_stddev(\@TaxTvs);
+    my $TaxStdTiFreq =  get_stddev(\@TaxTiFreqs);
+    my $TaxDist = $TaxAverageTiFreq - 0.177;
+    my $TaxDE = $TaxDist/(0.255*$size**-0.15);
+    print "\n Finished assessing $k. Taxon $a of $size";
+    print TAXA "$k\t$TaxAverageTiFreq\t$TaxStdTiFreq\t$TaxDE\n";
 }
 print "\n";
 ### Here we do the whole dataset DE-Score calculation ###
