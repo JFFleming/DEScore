@@ -9,7 +9,7 @@ my $freq_file = "$ARGV[1].SiteSaturation.TotalFrequencies.txt";
 my $tax_file = "$ARGV[1].SiteSaturation.TaxaFrequencies.txt";
 
 open (FREQ, '>', $freq_file) || die ("Can not open $freq_file\n");
-print FREQ "FileName\tExchangeFreq\tExchangeFreqStDev\tDE-Score\n";
+print FREQ "FileName\tExchangeFreq\tExchangeFreqStDev\tCriticalDE-Score\tDE-Score\n";
 open (TAXA, '>', $tax_file) || die ("Can not open $tax_file\n");
 print TAXA "FileName\tExchangeFreq\tExchangeFreqStDev\tDE-Score\n";
 my @all_seqs = ();
@@ -56,7 +56,10 @@ while ( my $seq = $align_file->next_seq() ) {
 }
 
 my $size = keys %phy_seqs;
+my $crit = 0.089/(0.255*$size**-0.15)
 print "There are $size taxa in this input dataset\n";
+print "The Critical DE-Score for this dataset is thereby $crit";
+print TAXA "CRITICAL\t0.266\tN/A\t$crit\n";
 my $a = 0;
 my @all_tvs;
 my @all_tis;
@@ -153,7 +156,7 @@ my $std_ti_freq =  get_stddev(\@all_ti_freqs);
 my $freq_dist = $average_ti_freq - 0.177;
 my $total_DE = $freq_dist/(0.255*$size**-0.15);
 
-print FREQ "$ARGV[0]\t$average_ti_freq\t$std_ti_freq\t$total_DE\n";
+print FREQ "$ARGV[0]\t$average_ti_freq\t$std_ti_freq\t$crit\t$total_DE\n";
 
 ### These are the mathematics subroutines for averages, standard deviations and disparity ###
 sub avg {
