@@ -56,7 +56,7 @@ while ( my $seq = $align_file->next_seq() ) {
 }
 
 my $size = keys %phy_seqs;
-my $crit = 0.089/(0.255*$size**-0.15)
+my $crit = 0.088/(0.255*$size**-0.15)
 print "There are $size taxa in this input dataset\n";
 print "The Critical DE-Score for this dataset is thereby $crit";
 print TAXA "CRITICAL\t0.266\tN/A\t$crit\n";
