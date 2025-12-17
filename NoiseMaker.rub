@@ -13,10 +13,6 @@ inputNumber = ARGV[0]
 inputLength = ARGV[1]
 simNumber = ARGV[2]
 
-# Ensure output directory exists
-output_dir = "Noisemaker_Output"
-Dir.mkdir(output_dir) unless Dir.exist?(output_dir)
-
 # Handle seeding
 if ARGV[3]
   seedNumber = ARGV[3]
@@ -28,8 +24,12 @@ else
   puts seedNumber
 end
 
+# Ensure output directory exists
+output_dir = "Noisemaker_Output_Ruby_#{seedNumber}"
+Dir.mkdir(output_dir) unless Dir.exist?(output_dir)
+
 # Write seed file inside output directory
-File.write("#{output_dir}/NoiseMakerSeed.txt", seedNumber + "\n")
+File.write("#{output_dir}/NoiseMakerSeed.txt", "Ruby" + "\n" + seedNumber + "\n")
 
 seqNumber = inputNumber.to_i
 seqLength = inputLength.to_i
