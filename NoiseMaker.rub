@@ -1,27 +1,52 @@
-####NOISEMAKER is very simple. It takes two inputs. Number, and Length. It produces 100 random "amino acid alignments" with a number of taxa equal to Number, and a length equal to Length.###
+####NOISEMAKER is very simple. It takes four inputs. The inputNumber (how many taxa in an alignment), inputLength (how many amino acid positions), simNumber (how many simulation cycles) and a fourth optional parameter, seed, which lets you track and repeat a simulation analysis.###
+version = 1.1
+print "Noisemaker Version ", version, ", October 14th 2025 written by James Fleming & Torsten H. Struck\n"
 
+aminoAcids = {
+  1 => "A", 2 => "R", 3 => "N", 4 => "D", 5 => "C",
+  6 => "Q", 7 => "E", 8 => "G", 9 => "H", 10 => "I",
+  11 => "L", 12 => "K", 13 => "M", 14 => "F", 15 => "P",
+  16 => "S", 17 => "T", 18 => "W", 19 => "Y", 20 => "V"
+}
 
-aminoAcids = {1 => "A",  2 => "R",  3 => "N",  4 => "D",  5 => "C",  6 => "Q",  7 => "E",  8 => "G",  9 => "H", 10 => "I",  11 => "L",  12 => "K",  13 => "M",  14 => "F",  15 => "P",  16 => "S",  17 => "T",  18 => "W",  19 => "Y",  20 => "V"}
 inputNumber = ARGV[0]
 inputLength = ARGV[1]
+simNumber = ARGV[2]
+
+# Ensure output directory exists
+output_dir = "Noisemaker_Output"
+Dir.mkdir(output_dir) unless Dir.exist?(output_dir)
+
+# Handle seeding
+if ARGV[3]
+  seedNumber = ARGV[3]
+  seed = seedNumber.to_i
+  srand(seed)
+else
+  seed = srand()
+  seedNumber = seed.to_s
+  puts seedNumber
+end
+
+# Write seed file inside output directory
+File.write("#{output_dir}/NoiseMakerSeed.txt", seedNumber + "\n")
 
 seqNumber = inputNumber.to_i
 seqLength = inputLength.to_i
-sims = 100
-
+sims = simNumber.to_i
 
 sims.times do |simNumber|
-	fileNumber = simNumber.to_s
-	fName = fileNumber + ".Noise.phy"
-	File.write(fName, inputNumber + " " + inputLength + "\n", mode: 'a+')
-	print inputNumber + " " + inputLength + "\n"
-	seqNumber.times do |i|
-		seq = Array.new()
-		seqLength.times do
-			rando=rand(1..20)
-			seq.push(aminoAcids[rando])
-		end
-		File.write(fName, "t#{i+1}\t" + seq.join() + "\n", mode: 'a+')
-		print "t#{i+1}\t" + seq.join() + "\n"
-	end
+  fileNumInt = simNumber + 1
+  fileNumber = fileNumInt.to_s
+  fName = "#{output_dir}/#{fileNumber}.Noise.fas"
+
+  seqNumber.times do |i|
+    seq = []
+    seqLength.times do
+      rando = rand(1..20)
+      seq.push(aminoAcids[rando])
+    end
+    File.write(fName, ">t#{i+1}\n" + seq.join() + "\n", mode: 'a+')
+    print ">t#{i+1}\n" + seq.join() + "\n"
+  end
 end
