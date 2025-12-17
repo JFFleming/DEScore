@@ -60,18 +60,25 @@ Format a command for Noisemaker as follows
 ``
 ruby NoiseMaker.rub 10 100 100
 ``
+
 This produces an alignment of ten taxa that is 100 amino acids in length 100 times. It also produces a text file which tracks the random seed.
+
 ``
 ruby NoiseMaker.rub 10 100 100 123456
 ``
+
 Will produce the same, but using the specified random seed 123456.
+
 ``
 perl NoiseMaker.pl 10 100 100
 ``
+
 and
+
 ``
 perl NoiseMaker.pl 10 100 100 123456
 ``
+
 Are the same command (although the random seed may differ between versions, and so output directories and random seed files are labelled as Noisemaker_Ruby and Noisemaker_Perl).
 
 
