@@ -24,6 +24,7 @@ my $seedNumber;
 if (defined $ARGV[3]) {
     $seedNumber = $ARGV[3];
     srand($seedNumber);
+    print "$seedNumber\n";
 } else {
     $seedNumber = time();
     srand($seedNumber);
@@ -31,7 +32,7 @@ if (defined $ARGV[3]) {
 }
 
 # Output directory
-my $output_dir = "Noisemaker_Output_$seedNumber";
+my $output_dir = "Noisemaker_Output_Perl_$seedNumber";
 if (-d $output_dir) {
     die "Warning: output directory '$output_dir' already exists. Aborting to prevent overwrite.\n";
 } else {
@@ -40,7 +41,7 @@ if (-d $output_dir) {
 
 # Write seed file
 open(my $seed_fh, '>', "$output_dir/NoiseMakerSeed.txt") or die $!;
-print $seed_fh "$seedNumber\n";
+print $seed_fh "Perl\n$seedNumber\n";
 close $seed_fh;
 
 # Convert inputs to integers
