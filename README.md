@@ -51,11 +51,11 @@ Inside Results.SiteSaturation.TotalFrequencies.txt you will find a table showing
 Inside Results.SiteSaturation.TaxaFrequencies.txt you will find the same, but for each taxa in your dataset instead.
 
 
-#NoiseMaker
-Also provided in this package is Noisemaker, a ruby script. It is a pure noise generator for amino acid datasets, used in the initial manuscript to test the effect of noise on the DE-Score. Noisemaker is a very simple program - you provide Noisemaker with a number of sequences and a length of an amino acid alignment and it produces a phylip alignment of pure noise by randomly generating a number from 1-20 X number of times.
+# NoiseMaker
+Also provided in this package is Noisemaker, available as either a perl or ruby script. It is a pure noise generator for amino acid datasets, used in the initial manuscript to test the effect of noise on the DE-Score. Noisemaker is a very simple program - you provide Noisemaker with four parameters - the number of taxa/sequences you would like in your alignment, the length of an amino acid alignment, the number of simulation cycles, and an optional parameter of a seed that will let you repeat the analysis by generating the same random datasets. It produces a fasta alignment of pure noise by randomly generating a number from 1-20 X number of times.
 
 Format a command for Noisemaker as follows
 ``
 ruby NoiseMaker.rub 10 100
 ``
-This produces an alignment of ten taxa that is 100 amino acids in length.
+This produces an alignment of ten taxa that is 100 amino acids in length. It also produces a text file which tracks the random seed.
