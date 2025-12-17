@@ -26,7 +26,11 @@ end
 
 # Ensure output directory exists
 output_dir = "Noisemaker_Output_Ruby_#{seedNumber}"
-Dir.mkdir(output_dir) unless Dir.exist?(output_dir)
+if Dir.exist?(output_dir)
+  abort("Warning: output directory '#{output_dir}' already exists. Aborting to prevent overwrite.\n")
+else
+  Dir.mkdir(output_dir)
+end
 
 # Write seed file inside output directory
 File.write("#{output_dir}/NoiseMakerSeed.txt", "Ruby" + "\n" + seedNumber + "\n")
