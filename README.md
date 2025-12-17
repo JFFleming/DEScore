@@ -22,12 +22,14 @@ It also comes in a taxa-specific variant, calculated as follows:
 
 
 # Installing the DE-Score Calculator
-The DE-Score Calculator provided in this Github is easy to install. It is a Perl script that requires the installation of one additional Perl module - FAST::Bio::SeqIO (this is a Bioperl module that makes it easier to read Fasta Files).
-This can be installed with the following command:
+The DE-Score Calculator provided in this Github is easy to install. It is a Perl script without the use of any additional modules. Simply download and start!
 
 ``
-cpan FAST::Bio::SeqIO
+perl DEScoreCalculator.pl
 ``
+
+Without any additional commands will engage a test run against a dataset that exists within the script itself. 
+This dataset should produce the output files you see in the test output folder on the GitHub.
 
 And then you're ready to go!
 
