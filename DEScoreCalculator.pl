@@ -38,12 +38,8 @@ A dataset-wide DE-Score and critical DE-Score threshold
 
 =back
 
-Amino acids are grouped into biochemical categories (e.g. small,
-hydrophobic, acidic/amide), and substitutions within the same category
-are treated as exchangeable events.
-
 The DE-Score is normalized according to the number of taxa in the
-alignment, allowing comparisons across datasets of different sizes.
+alignment, allowing for comparisons across datasets of different sizes.
 
 =head1 INPUT
 
@@ -51,19 +47,6 @@ alignment, allowing comparisons across datasets of different sizes.
 
 A multiple sequence alignment in FASTA format containing amino acid
 sequences.
-
-=over 4
-
-=item *
-Sequences must be aligned and of equal length
-
-=item *
-Standard single-letter amino acid codes are expected
-
-=item *
-Gaps ('-') and invalid characters are ignored during comparisons
-
-=back
 
 =head2 Output prefix
 
@@ -113,19 +96,6 @@ DE-Score for the entire alignment
 =back
 
 =head1 METHOD SUMMARY
-
-All unique taxon pairs are compared without redundancy.
-For each aligned position, substitutions are classified as either:
-
-=over 4
-
-=item *
-Within-category (exchangeable)
-
-=item *
-Between-category (non-exchangeable)
-
-=back
 
 The DE-Score is calculated as the normalized distance between the observed Dayhoff 
 category exchange frequency and the Dayhoff saturation threshold (0.177).
