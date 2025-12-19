@@ -117,6 +117,7 @@ If you have any questions, queries or comments, please don't hesitate to get in 
 j.fleming\@ub.edu
 ";
 
+# Check which input files are provided, and trigger the automatic input if necessary.
 my ($align_check, $output_check);
 if (@ARGV == 1) {
 print "Only one argument was provided, sorry. Please note the above command to run DE-Score Calculator. You may have forgotten to specify the alignment file or the output prefix.\n";
@@ -140,6 +141,7 @@ my %phy_seqs = parse_fasta($align_check);
 my $freq_file = "$output_check.SiteSaturation.TotalFrequencies.txt";
 my $tax_file  = "$output_check.SiteSaturation.TaxaFrequencies.txt";
 
+# Create the critical DE-Score
 my $size = keys %phy_seqs;
 my $normalisation_constant = 0.255 * $size**-0.15;
 my $crit_DaCER             = 0.265;
@@ -153,6 +155,7 @@ print FREQ "FileName\tExchangeFreq\tExchangeFreqStDev\tCriticalDE-Score\tDE-Scor
 open(TAXA, '>', $tax_file) or die "Cannot open $tax_file\n";
 print TAXA "FileName\tExchangeFreq\tExchangeFreqStDev\tDE-Score\n";
 
+#Set up the 6 Dayhoff Categories
 my @small        = qw(A G P S T);
 my @acid_amide   = qw(D E N Q);
 my @basic        = qw(H K R);
@@ -161,7 +164,7 @@ my @aromatic     = qw(F W Y);
 my @sulfur       = qw(C);
 my @valid_seqs   = qw(A G P S T D E N Q H K R I L V M F W Y C);
 
-# Hashes for fast category lookup
+# Create hashes for lookup
 my %valids = map { $_ => 1 } @valid_seqs;
 
 my %category;
@@ -252,7 +255,7 @@ foreach my $taxon_id (@taxa_ids) {
 
 print "\n";
 
-# Whole dataset DE-Score
+# Calculate the whole dataset DE-Score
 my $average_ti_freq = avg(\@all_ti_freqs);
 my $std_ti_freq     = get_stddev(\@all_ti_freqs);
 my $freq_dist       = $average_ti_freq - $saturation_DaCER;
