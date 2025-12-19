@@ -1,6 +1,19 @@
 #!/usr/bin/perl
 use strict;
 use warnings;
+=pod
+
+=head1 NAME
+
+Nosiemaker - making random amino acid sequences.
+
+=head1 SYNOPSIS
+
+  perl Noisemaker.pl <Number of Sequences in output alignment> <Length of Sequences in output alignment> <Number of Simulations> <Seed(optional parameter)>
+
+=head1 DESCRIPTION
+
+NOISEMAKER is very simple. It takes four inputs. The inputNumber (how many taxa in an alignment), inputLength (how many amino acid positions), simNumber (how many simulation cycles) and a fourth optional parameter, seed, which lets you track and repeat a simulation analysis.
 
 # Version and startup message
 my $version = 1.1;
