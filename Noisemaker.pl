@@ -19,19 +19,18 @@ my $inputNumber = $ARGV[0];
 my $inputLength = $ARGV[1];
 my $simNumber   = $ARGV[2];
 
-# Random seed handling
+# Handle seeding
 my $seedNumber;
 if (defined $ARGV[3]) {
     $seedNumber = $ARGV[3];
     srand($seedNumber);
     print "$seedNumber\n";
 } else {
-    $seedNumber = time();
-    srand($seedNumber);
+    $seedNumber = srand();
     print "$seedNumber\n";
 }
 
-# Output directory
+# Ensure output directory exists
 my $output_dir = "Noisemaker_Output_Perl_$seedNumber";
 if (-d $output_dir) {
     die "Warning: output directory '$output_dir' already exists. Aborting to prevent overwrite.\n";
@@ -39,37 +38,32 @@ if (-d $output_dir) {
     mkdir $output_dir or die "Failed to create directory '$output_dir': $!\n";
 }
 
-# Write seed file
-open(my $seed_fh, '>', "$output_dir/NoiseMakerSeed.txt") or die $!;
-print $seed_fh "Perl\n$seedNumber\n";
-close $seed_fh;
+# Write seed file inside output directory
+open(my $seed_file, '>', "$output_dir/NoiseMakerSeed.txt") or die $!;
+print $seed_file "Perl\n$seedNumber\n";
+close $seed_file;
 
-# Convert inputs to integers
-my $seqNumber = int($inputNumber);
-my $seqLength = int($inputLength);
-my $sims      = int($simNumber);
-
-# Simulation loop
-for (my $sim = 0; $sim < $sims; $sim++) {
+#Noisemaker
+for (my $sim = 0; $sim < $simNumber; $sim++) {
 
     my $fileNumber = $sim + 1;
-    my $fName = "$output_dir/$fileNumber.Noise.fas";
+    my $fileName = "$output_dir/$fileNumber.Noise.fas";
 
-    open(my $fh, '>>', $fName) or die $!;
+    open(my $file, '>>', $fileName) or die $!;
 
-    for (my $i = 0; $i < $seqNumber; $i++) {
+    for (my $i = 0; $i < $inputNumber; $i++) {
 
         my $seq = '';
 
-        for (my $j = 0; $j < $seqLength; $j++) {
-            my $rando = int(rand(20)) + 1;
-            $seq .= $aminoAcids{$rando};
+        for (my $j = 0; $j < $inputLength; $j++) {
+            my $randomaa = srand(20) + 1;
+            $seq .= $aminoAcids{$randomaa};
         }
 
         my $header = ">t" . ($i + 1) . "\n";
-        print $fh $header, $seq, "\n";
+        print $file $header, $seq, "\n";
 #        print $header, $seq, "\n";
     }
 
-    close $fh;
+    close $file;
 }
